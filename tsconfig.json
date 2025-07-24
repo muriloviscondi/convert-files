@@ -1,0 +1,22 @@
+{
+  "files": [],
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
+  "compilerOptions": {
+    "types": ["node"],
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      // libs
+      "@lib": ["./src/lib/index.ts"],
+
+      // components
+      "@components": ["./src/components/index.ts"],
+
+      //features
+      "@features": ["./src/features/index.ts"],
+
+      // pages
+      "@pages": ["./src/pages/index.ts"]
+    }
+  }
+}

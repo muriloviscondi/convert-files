@@ -55,65 +55,68 @@ export const FormComponent = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
-  const handleFormSubmit: SubmitHandler<FormValues> = useCallback(async (formData) => {
-    if (!file || file.length === 0) {
-      setFileError(true)
-      return
-    }
-
-    setIsLoading(true)
-    setMessage(null)
-    setFileError(false)
-
-    const { fromConvert, toConvert } = formData
-
-    const conversionKey = `${fromConvert}_to_${toConvert}` as KeyRequest
-    const [selectedFile] = file
-
-    const fileName = selectedFile.name
-    const fileType = fileName.slice(fileName.lastIndexOf('.')).toLowerCase()
-
-    const isValid =
-      acceptedFileTypes.includes(fileType) && fileName.endsWith(`.${fromConvert.toLowerCase()}`)
-
-    if (!isValid) {
-      setMessage({
-        type: 'error',
-        text: `Invalid file type. Expected ${fromConvert} file.`,
-      })
-      setIsLoading(false)
-      return
-    }
-
-    try {
-      const result = await convertFile({ keyRequest: conversionKey, file: selectedFile })
-
-      if (result.success) {
-        setMessage({
-          type: 'success',
-          text: `File converted successfully! Downloaded as: ${result.filename ?? 'converted file'}`,
-        })
-
-        setFile(null)
-        setValue('fromConvert', '')
-        setValue('toConvert', '')
-
+  const handleFormSubmit: SubmitHandler<FormValues> = useCallback(
+    async (formData) => {
+      if (!file || file.length === 0) {
+        setFileError(true)
         return
       }
 
-      setMessage({
-        type: 'error',
-        text: result.error ?? 'Conversion failed',
-      })
-    } catch (error) {
-      setMessage({
-        type: 'error',
-        text: `Unexpected error: ${error instanceof Error ? error.message : String(error)}`,
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
+      setIsLoading(true)
+      setMessage(null)
+      setFileError(false)
+
+      const { fromConvert, toConvert } = formData
+
+      const conversionKey = `${fromConvert}_to_${toConvert}` as KeyRequest
+      const [selectedFile] = file
+
+      const fileName = selectedFile.name
+      const fileType = fileName.slice(fileName.lastIndexOf('.')).toLowerCase()
+
+      const isValid =
+        acceptedFileTypes.includes(fileType) && fileName.endsWith(`.${fromConvert.toLowerCase()}`)
+
+      if (!isValid) {
+        setMessage({
+          type: 'error',
+          text: `Invalid file type. Expected ${fromConvert} file.`,
+        })
+        setIsLoading(false)
+        return
+      }
+
+      try {
+        const result = await convertFile({ keyRequest: conversionKey, file: selectedFile })
+
+        if (result.success) {
+          setMessage({
+            type: 'success',
+            text: `File converted successfully! Downloaded as: ${result.filename ?? 'converted file'}`,
+          })
+
+          setFile(null)
+          setValue('fromConvert', '')
+          setValue('toConvert', '')
+
+          return
+        }
+
+        setMessage({
+          type: 'error',
+          text: result.error ?? 'Conversion failed',
+        })
+      } catch (error) {
+        setMessage({
+          type: 'error',
+          text: `Unexpected error: ${error instanceof Error ? error.message : String(error)}`,
+        })
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [file, setValue],
+  )
 
   const handleFileChange = useCallback((files: FileList | null) => {
     if (files && files.length > 0) {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { Button, createListCollection } from '@chakra-ui/react'
 import {
@@ -12,12 +12,10 @@ import {
   RefreshIcon,
   Select,
 } from '@components'
-
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm, type SubmitHandler } from 'react-hook-form'
-import { z } from 'zod'
-
 import { convertFile, type KeyRequest } from '@lib'
+import { Controller, type SubmitHandler, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 type FormValues = z.infer<typeof formSchema>
 
@@ -57,9 +55,8 @@ export const FormComponent = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
-  const handleFormSubmit: SubmitHandler<FormValues> = async (formData) => {
+  const handleFormSubmit: SubmitHandler<FormValues> = useCallback(async (formData) => {
     if (!file || file.length === 0) {
-      console.error('No file selected')
       setFileError(true)
       return
     }
@@ -71,7 +68,7 @@ export const FormComponent = () => {
     const { fromConvert, toConvert } = formData
 
     const conversionKey = `${fromConvert}_to_${toConvert}` as KeyRequest
-    const selectedFile = file[0]
+    const [selectedFile] = file
 
     const fileName = selectedFile.name
     const fileType = fileName.slice(fileName.lastIndexOf('.')).toLowerCase()
@@ -94,7 +91,7 @@ export const FormComponent = () => {
       if (result.success) {
         setMessage({
           type: 'success',
-          text: `File converted successfully! Downloaded as: ${result.filename}`,
+          text: `File converted successfully! Downloaded as: ${result.filename ?? 'converted file'}`,
         })
 
         setFile(null)
@@ -106,26 +103,25 @@ export const FormComponent = () => {
 
       setMessage({
         type: 'error',
-        text: result.error || 'Conversion failed',
+        text: result.error ?? 'Conversion failed',
       })
     } catch (error) {
       setMessage({
         type: 'error',
-        text: `Unexpected error: ${error}`,
+        text: `Unexpected error: ${error instanceof Error ? error.message : String(error)}`,
       })
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
-  const handleFileChange = (files: FileList | null) => {
+  const handleFileChange = useCallback((files: FileList | null) => {
     if (files && files.length > 0) {
-      console.log('Files changed:', files)
       setFile(files)
       setFileError(false)
       setMessage(null)
     }
-  }
+  }, [])
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>

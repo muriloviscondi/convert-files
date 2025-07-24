@@ -7,7 +7,7 @@ export const convertXLSXToJSON = async (file: File): Promise<ConversionResult> =
   try {
     const arrayBuffer = await file.arrayBuffer()
     const workbook = XLSX.read(arrayBuffer, { type: 'array' })
-    const sheetName = workbook.SheetNames[0]
+    const [sheetName] = workbook.SheetNames
     const worksheet = workbook.Sheets[sheetName]
 
     const jsonData = XLSX.utils.sheet_to_json(worksheet)
@@ -19,6 +19,9 @@ export const convertXLSXToJSON = async (file: File): Promise<ConversionResult> =
 
     return { success: true, filename }
   } catch (error) {
-    return { success: false, error: `Error converting XLSX to JSON: ${error}` }
+    return {
+      success: false,
+      error: `Error converting XLSX to JSON: ${error instanceof Error ? error.message : String(error)}`,
+    }
   }
 }

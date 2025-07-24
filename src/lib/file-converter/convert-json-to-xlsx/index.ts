@@ -26,6 +26,9 @@ export const convertJSONToXLSX = async (file: File): Promise<ConversionResult> =
 
     return { success: true, filename }
   } catch (error) {
-    return { success: false, error: `Error converting JSON to XLSX: ${error}` }
+    return {
+      success: false,
+      error: `Error converting JSON to XLSX: ${error instanceof Error ? error.message : String(error)}`,
+    }
   }
 }

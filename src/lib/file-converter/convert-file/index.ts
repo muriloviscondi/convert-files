@@ -6,32 +6,35 @@ import {
   convertXLSXToCSV,
   convertXLSXToJSON,
 } from '..'
-import type { ConversionKeyRequest } from '../types'
+import type { ConversionKeyRequest, ConversionResult } from '../types'
 
-export const convertFile = async ({ keyRequest, file }: ConversionKeyRequest) => {
+export const convertFile = ({
+  keyRequest,
+  file,
+}: ConversionKeyRequest): Promise<ConversionResult> => {
   switch (keyRequest) {
     case 'CSV_to_XLSX':
-      return await convertCSVToXLSX(file)
+      return convertCSVToXLSX(file)
 
     case 'XLSX_to_CSV':
-      return await convertXLSXToCSV(file)
+      return convertXLSXToCSV(file)
 
     case 'JSON_to_CSV':
-      return await convertJSONToCSV(file)
+      return convertJSONToCSV(file)
 
     case 'CSV_to_JSON':
-      return await convertCSVToJSON(file)
+      return convertCSVToJSON(file)
 
     case 'XLSX_to_JSON':
-      return await convertXLSXToJSON(file)
+      return convertXLSXToJSON(file)
 
     case 'JSON_to_XLSX':
-      return await convertJSONToXLSX(file)
+      return convertJSONToXLSX(file)
 
     default:
-      return {
+      return Promise.resolve({
         success: false,
         error: `Error converting ${String(keyRequest).replaceAll('_', ' ')}`,
-      }
+      })
   }
 }

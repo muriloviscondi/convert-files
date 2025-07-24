@@ -1,6 +1,6 @@
-import * as XLSX from 'xlsx'
-import Papa from 'papaparse'
 import { saveAs } from 'file-saver'
+import Papa from 'papaparse'
+import * as XLSX from 'xlsx'
 
 import type { ConversionResult } from '../types'
 
@@ -27,6 +27,9 @@ export const convertCSVToXLSX = async (file: File): Promise<ConversionResult> =>
 
     return { success: true, filename }
   } catch (error) {
-    return { success: false, error: `Error converting CSV to XLSX: ${error}` }
+    return {
+      success: false,
+      error: `Error converting CSV to XLSX: ${error instanceof Error ? error.message : String(error)}`,
+    }
   }
 }

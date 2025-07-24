@@ -1,7 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react'
+import { StyledThemeProvider,system } from '@lib'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { system, StyledThemeProvider } from '@lib'
 
 import App from './App.tsx'
 

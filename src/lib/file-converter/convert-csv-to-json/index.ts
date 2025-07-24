@@ -19,6 +19,9 @@ export const convertCSVToJSON = async (file: File): Promise<ConversionResult> =>
 
     return { success: true, filename }
   } catch (error) {
-    return { success: false, error: `Error converting CSV to JSON: ${error}` }
+    return {
+      success: false,
+      error: `Error converting CSV to JSON: ${error instanceof Error ? error.message : String(error)}`,
+    }
   }
 }

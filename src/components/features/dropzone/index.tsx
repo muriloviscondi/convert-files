@@ -1,5 +1,6 @@
-import { Box, FileUpload, Icon, OutlineCloudUploadIcon } from '@components'
 import { type FormEvent } from 'react'
+
+import { Box, FileUpload, Icon, OutlineCloudUploadIcon } from '@components'
 
 type Props = {
   acceptedFileTypes?: string[]

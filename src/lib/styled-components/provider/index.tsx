@@ -1,7 +1,9 @@
 import React from 'react'
+
 import { ThemeProvider } from 'styled-components'
-import { styledTheme } from '../theme/theme'
+
 import { GlobalReset } from '../global-reset-styles'
+import { styledTheme } from '../theme/theme'
 
 interface StyledThemeProviderProps {
   children: React.ReactNode

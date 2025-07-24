@@ -8,18 +8,6 @@ export const media = {
   xl: (styles: string) => `@media (min-width: 1280px) { ${styles} }`,
 }
 
-// Theme accessor helpers
-export const getColor = (color: string) => (props: { theme: DefaultTheme }) => {
-  const keys = color.split('.')
-  let value: any = props.theme.colors
-
-  for (const key of keys) {
-    value = value?.[key]
-  }
-
-  return value || color
-}
-
 export const getSpacing =
   (spacing: keyof DefaultTheme['spacing']) => (props: { theme: DefaultTheme }) =>
     props.theme.spacing[spacing]

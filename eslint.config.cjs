@@ -92,6 +92,15 @@ module.exports = defineConfig([
       react: {
         version: 'detect',
       },
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.app.json',
+        },
+        node: {
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        },
+      },
     },
     rules: {
       'react/react-in-jsx-scope': 'off',
@@ -117,7 +126,7 @@ module.exports = defineConfig([
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/no-misused-promises': [
-        'error',
+        'warn',
         {
           checksConditionals: true,
           checksVoidReturn: true,

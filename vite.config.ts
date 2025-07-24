@@ -14,7 +14,7 @@ export default defineConfig({
       '@components': path.resolve(__dirname, './src/components'),
 
       //features
-      '@features': path.resolve(__dirname, './src/features'),
+      '@convert-files': path.resolve(__dirname, './src/features/convert-files'),
 
       // pages
       '@pages': path.resolve(__dirname, './src/pages'),

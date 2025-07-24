@@ -13,7 +13,7 @@
       "@components": ["./src/components/index.ts"],
 
       //features
-      "@features": ["./src/features/index.ts"],
+      "@convert-files": ["./src/features/convert-files/index.ts"],
 
       // pages
       "@pages": ["./src/pages/index.ts"]
